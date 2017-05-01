@@ -6,10 +6,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var config = require('./config');
 var mysql = require('mysql');
+var session = require('express-session');
 global.pool  = mysql.createPool({
   connectionLimit : 30,
   host            : config.database.host,
-  user            : config.database.user,
+  user            : config.database.username,
   password        : config.database.password,
   database        : config.database.database
 });
@@ -48,21 +49,25 @@ passport.use(new FacebookStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
-      global.user_fb_access_token=accessToken;
       //Check whether the User exists or not using profile.id
-      userClass.isNew(profile.id,function(isNew){
-        if (isNew) {
+      global.pool.query("SELECT COUNT(*) as count FROM `user` WHERE userid=?;",[profile.id],function(err,rows){
+        if (rows[0].count==0) {
           console.log("There is no such user, adding now ", profile.displayName);
-          global.pool.query("INSERT into user VALUES(?,0,NULL,?)",[profile.id,JSON.stringify(profile)]);
+          global.pool.query("INSERT into user VALUES(?,0,NULL,?);",[profile.id,JSON.stringify(profile)]);
         } else {
           console.log("User " + profile.displayName + " logged in.");
         }
+        return done(null, profile);
       });
-      return done(null, profile);
     });
   }
 ));
 
+app.use(session({
+    secret            : 'cEstLeMarketPutainMaggle!',
+    resave            : false,
+    saveUninitialized : true
+}));
 
 FB.api('oauth/access_token', {
     client_id: config.facebook.api_key,
@@ -75,12 +80,12 @@ FB.api('oauth/access_token', {
     }
   console.log("Access token FB : ", res.access_token)
     FB.setAccessToken = res.access_token;
-    global.fb_access_token = res.access_token;
 });
 
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/auth/facebook', passport.authenticate('facebook',{scope:'email'}));
-
 
 app.get('/auth/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/' }),
