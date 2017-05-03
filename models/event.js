@@ -1,15 +1,14 @@
 var Sequelize = require('sequelize');
 var sequelize = global.sequelize;
 
-var User = sequelize.define('user', {
-  userid: {
-    type: Sequelize.STRING,
-    primaryKey: true
-  },
-  displayName: {
+var Event = sequelize.define('event', {
+  title: {
     type: Sequelize.STRING
   },
-  admin: {
+  description: {
+    type: Sequelize.STRING
+  },
+  date: {
     type: Sequelize.BOOLEAN,
     defaultValue : false
   }
@@ -18,4 +17,4 @@ var User = sequelize.define('user', {
   freezeTableName: true
 });
 
-module.exports = User;
+module.exports = Event;

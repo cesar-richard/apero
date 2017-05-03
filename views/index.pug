@@ -10,28 +10,23 @@ append scripts
 			}
 		});
 
-mixin event(parent,author,title,description,will,expanded)
-	-var id = title.replace(/\s+/g,"")
-	+accordion-item-primary(title,parent ,expanded)
+mixin event(parent,event,expanded)
+	+accordion-item-primary(event.title + " - " + event.author.displayName,parent ,expanded)
 		div 
-			div(style="")
-				+img-rounded(user.photos[0].value, user.displayName) user.displayName
-				div(style="display: inline-block; padding: 1em;")
-					strong= user.displayName+" : "
-					=description
+			+img-rounded("https://graph.facebook.com/v2.9/" + event.authorUserid + "/picture", event.author.displayName) event.author.displayName
+			div(style="display: inline-block; padding: 1em;")
+				strong= event.author.displayName + " : "
+				=event.description
 		div(style='text-align: center;')
 			| Envie : 
-			input.slider(style="width: 85%;", data-slider-id=id+'Slider', type='text', data-slider-ticks="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", data-slider-value=will )
+			input.slider(style="width: 85%;", data-slider-id=event.id+'Slider', type='text', data-slider-ticks="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", data-slider-value=1 )
 
 block content
 	.jumbotron
-		h1= test
 		p
 			| Hi there, #{user.name.givenName} ! This site is under construction. Sry, soab.
 	.page-header
-	
-	+accordion("sample")
-		+event("sample",user,"Apero 1","Apéro pénard ce soir sur les bords de l'oise ?",3,true)
-		+event("sample",user,"Murge","On se fait un BBQ chez moi demain ?",6,true)
-		+event("sample",user,"Weekend Ovalies","Y'a vraiment besoin d'une description ? C'est un event de dingue, c'est tout.",10,true)
-		+event("sample",user,"Soirey posey","Petite ambiance tamisey, tisane et cidre pour les plus fous.",1,false)
+
+	+accordion("events")
+		each event in events
+			+event("events",event,true)

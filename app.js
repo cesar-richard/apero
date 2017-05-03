@@ -19,8 +19,7 @@ global.sequelize = new Sequelize(config.database.database, config.database.usern
   logging: false
 });
 
-var User = require('./models/user');
-
+require('./models');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -46,25 +45,26 @@ passport.deserializeUser(function(obj, done) {
 
 // Use the FacebookStrategy within Passport.
 
-passport.use(new FacebookStrategy({
-  clientID: config.facebook.api_key,
-  clientSecret:config.facebook.api_secret ,
-  callbackURL: config.facebook.callback_url,
-  profileFields: ['id', 'displayName','photos','email','first_name','last_name',]
-},
-function(accessToken, refreshToken, profile, done) {
-  process.nextTick(function () {
-    User
-    .findOrCreate({where: {userid: profile.id, raw_infos: JSON.stringify(profile)}})
-    .spread(function(user, created) {
-      if(created)
-        console.log("User "+profile.displayName+" created");
-      console.log(profile.displayName+" logged in");
+passport.use(new FacebookStrategy(
+  {
+    clientID: config.facebook.api_key,
+    clientSecret:config.facebook.api_secret ,
+    callbackURL: config.facebook.callback_url,
+    profileFields: ['id', 'displayName','photos','email','first_name','last_name',]
+  },
+  function(accessToken, refreshToken, profile, done) {
+    process.nextTick(function () {
+      global.sequelize.models.user
+      .findOrCreate({where: {userid: profile.id}, defaults: profile})
+      .spread(function(user, created) {
+        if(created)
+          console.log("User "+profile.displayName+" created");
+        console.log(profile.displayName+" logged in");
+      });
       return done(null, profile);
     });
-  });
-}
-));
+  })
+);
 
 app.use(session({
   secret            : 'cEstLeMarketPutainMaggle!',
@@ -119,7 +119,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req,res,next){
   res.locals.title = "Apéro !";
-  res.locals.user = req.user;
+  res.locals.fb_api_key = config.facebook.api_key;
+  res.locals.user = req.user;/*
+  res.locals.user.displayName = "test";
+  res.locals.user.photos = [{value: "test"}];*/
   return next();
 });
 

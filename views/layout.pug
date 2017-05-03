@@ -15,3 +15,23 @@ block body
 			include nav
 	.container.theme-showcase(role='main')
 		block content
+	div(id="fb-root")
+append scripts
+	script.
+		window.fbAsyncInit = function() {
+			FB.init({
+				appId				: #{fb_api_key},
+				status			: true,
+				cookies			: true,
+				xfbml				: true,
+				version: 'v2.9'
+			});
+		};
+		// Load the SDK Asynchronously
+		(function(d){
+			var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+			if (d.getElementById(id)) {return;}
+			js = d.createElement('script'); js.id = id; js.async = true;
+			js.src = "//connect.facebook.net/fr_FR/all.js";
+			ref.parentNode.insertBefore(js, ref);
+		}(document));
