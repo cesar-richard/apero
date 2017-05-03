@@ -10,24 +10,27 @@ append scripts
 			}
 		});
 
-mixin event(parent,title,value,expanded)
+mixin event(parent,author,title,description,will,expanded)
 	-var id = title.replace(/\s+/g,"")
 	+accordion-item-primary(title,parent ,expanded)
-		p  Soirée ce soir ?
+		div 
+			div(style="")
+				+img-rounded(user.photos[0].value, user.displayName) user.displayName
+				div(style="display: inline-block; padding: 1em;")
+					strong= user.displayName+" : "
+					=description
 		div(style='text-align: center;')
 			| Envie : 
-			input.slider(style="width: 85%;", data-slider-id=id+'Slider', type='text', data-slider-ticks="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", data-slider-value=value )
+			input.slider(style="width: 85%;", data-slider-id=id+'Slider', type='text', data-slider-ticks="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", data-slider-value=will )
 
 block content
 	.jumbotron
 		p
 			| Hi there, #{user.name.givenName} ! This site is under construction. Sry, soab.
 	.page-header
-
-
 	
 	+accordion("sample")
-		+event("sample","Apero 1",3,true)
-		+event("sample","Murge",6,true)
-		+event("sample","Weekend Ovalies",10,true)
-		+event("sample","Soirey posey",1,false)
+		+event("sample",user,"Apero 1","Apéro pénard ce soir sur les bords de l'oise ?",3,true)
+		+event("sample",user,"Murge","On se fait un BBQ chez moi demain ?",6,true)
+		+event("sample",user,"Weekend Ovalies","Y'a vraiment besoin d'une description ? C'est un event de dingue, c'est tout.",10,true)
+		+event("sample",user,"Soirey posey","Petite ambiance tamisey, tisane et cidre pour les plus fous.",1,false)
