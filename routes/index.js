@@ -4,7 +4,8 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', fbclass.ensureAuthenticated, function(req, res, next) {
-  res.render('index', { user: req.user });
+	console.log(req.user);
+	res.render('index', { user: req.user });
 });
 
 module.exports = router;
