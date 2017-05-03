@@ -9,26 +9,25 @@ append scripts
 				return value + "/10";
 			}
 		});
+
+mixin event(parent,title,value,expanded)
+	-var id = title.replace(/\s+/g,"")
+	+accordion-item-primary(title,parent ,expanded)
+		p  Soirée ce soir ?
+		div(style='text-align: center;')
+			| Envie : 
+			input.slider(style="width: 85%;", data-slider-id=id+'Slider', type='text', data-slider-ticks="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", data-slider-value=value )
+
 block content
 	.jumbotron
 		p
 			| Hi there, #{user.name.givenName} ! This site is under construction. Sry, soab.
 	.page-header
 
-	+accordion("sample")
-		+accordion-item-primary("Apéro 1","sample","true")
-			p  Soirée ce soir ?
-			div(style='text-align: center;')
-				| Envie : 
-				input.slider(style="width: 85%;", data-slider-id='ex1Slider', type='text', data-slider-min='0', data-slider-max='10', data-slider-step='1', data-slider-value='5' data-slider-ticks="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" data-slider-ticks-snap-bounds="1" data-slider-ticks-labels='[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]')
 
-		+accordion-item-primary("Murge","sample","true")
-			p  Soirée ce soir ?
-			div(style='text-align: center;')
-				| Envie : 
-				input.slider(style="width: 85%;", data-slider-id='ex1Slider', type='text', data-slider-min='0', data-slider-max='10', data-slider-step='1', data-slider-value='5')
-		+accordion-item-primary("Weekend","sample","true")
-			p  Soirée ce soir ?
-			div(style='text-align: center;')
-				| Envie : 
-				input.slider(style="width: 85%;", data-slider-id='ex1Slider', type='text', data-slider-min='0', data-slider-max='10', data-slider-step='1', data-slider-value='5')
+	
+	+accordion("sample")
+		+event("sample","Apero 1",3,true)
+		+event("sample","Murge",6,true)
+		+event("sample","Weekend Ovalies",10,true)
+		+event("sample","Soirey posey",1,false)
