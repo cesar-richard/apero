@@ -6,6 +6,7 @@ a.navbar-brand(href='#') Apero !
 	ul.nav.navbar-nav
 		+navlink('','Home')(class='active')
 	ul.nav.navbar-nav.navbar-right
-		+navlink('/profile', user.displayName)
-		li
+		
+		li(id='navprofile')
 			+img-rounded(user.photos[0].value, user.displayName)
+			a(href="/profile", style="display: inline") #{user.displayName}
