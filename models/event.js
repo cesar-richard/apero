@@ -9,8 +9,7 @@ var Event = sequelize.define('event', {
     type: Sequelize.STRING
   },
   date: {
-    type: Sequelize.BOOLEAN,
-    defaultValue : false
+    type: Sequelize.DATE
   }
 }, {
   timestamps: true,
