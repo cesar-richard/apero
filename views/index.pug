@@ -28,7 +28,6 @@ mixin event(parent,event,expanded)
 				div(style="display: inline-block; padding: 1em;")
 					strong= event.author.displayName + " : "
 					=event.description
-<<<<<<< HEAD
 		-var mustAnswer = typeof(event.users.find(function(el) {return el.userid== user.id;}))==='undefined';
 		if mustAnswer
 				+will(user,user.id,0,true)
@@ -37,14 +36,6 @@ mixin event(parent,event,expanded)
 				+will(answer,answer.userid,answer.answers.will,true)
 			else
 				+will(answer,answer.userid,answer.answers.will,false)
-=======
-		each answer in event.users
-			+will(answer,answer.userid,answer.eventUsers.will,false)
-			-var hasAnswered = !typeof(event.users.find(function(el) {return el.userid== user.id;}))==='undefined';
-			if !hasAnswered
-				+will(user,user.id,0,true)
-
->>>>>>> e8032ac02c9481fe350b3753a3ea5c518d93be87
 block content
 	.jumbotron
 		p
