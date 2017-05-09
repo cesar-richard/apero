@@ -1,8 +1,8 @@
 var Sequelize = require('sequelize');
 var sequelize = global.sequelize;
 
-EventUsers = sequelize.define('eventUsers', {
+answers = sequelize.define('answers', {
     will: Sequelize.INTEGER
 });
 
-module.exports = EventUsers;
+module.exports = answers;
