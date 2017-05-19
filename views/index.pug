@@ -1,9 +1,47 @@
 extends layout
+append styles
+	link(href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.min.css", rel='stylesheet')
+append scripts
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.min.js')
+	script.
+		$('input.slider').slider({
+			formatter: function(value) {
+				return value + "/10";
+			}
+		});
+
+mixin will(user,userid,will,enabled)
+	p
+			div
+				+img-rounded("https://graph.facebook.com/v2.9/" + userid + "/picture", user.displayName) user.displayName
+				div(style="display: inline-block; padding: 1em;")
+					strong= user.displayName
+			div(style='text-align: center;')
+				| Envie : 
+				input.slider(style="width: 85%;", type='text', data-slider-ticks="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", data-slider-enabled=enabled?"true":"false", data-slider-value=will )
+
+mixin event(parent,event,expanded)
+	+accordion-item-primary(event.title + " - " + event.author.displayName,parent ,expanded)
+		p
+			div 
+				+img-rounded("https://graph.facebook.com/v2.9/" + event.authorUserid + "/picture", event.author.displayName) event.author.displayName
+				div(style="display: inline-block; padding: 1em;")
+					strong= event.author.displayName + " : "
+					=event.description
+		-var mustAnswer = typeof(event.users.find(function(el) {return el.userid== user.id;}))==='undefined';
+		if mustAnswer
+				+will(user,user.id,0,true)
+		each answer in event.users
+			if answer.userid == user.id
+				+will(answer,answer.userid,answer.answers.will,true)
+			else
+				+will(answer,answer.userid,answer.answers.will,false)
 block content
 	.jumbotron
-		h1 Hi there, #{user.name.givenName} !
 		p
-			| This site is under construction. Sry, soab.
+			| Hi there, #{user.name.givenName} ! This site is under construction. Sry, soab.
 	.page-header
-	p
-		h1 test
+
+	+accordion("events")
+		each event in events
+			+event("events",event,true)

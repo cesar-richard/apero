@@ -4,7 +4,11 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', fbclass.ensureAuthenticated, function(req, res, next) {
-  res.render('index', { user: req.user });
+	global.sequelize.models.event.findAll({
+		include: [{ all: true }]
+	}).then(function(events) {
+		res.render('index', {events: events});
+	});
 });
 
 module.exports = router;

@@ -1,9 +1,12 @@
 mixin navlink(url,name)
-	li(id='nav'+name)&attributes(attributes)
+	li(id='nav'+url)&attributes(attributes)
 		a(href=url) #{name}
 a.navbar-brand(href='#') Apero !
 #navbar.navbar-collapse.collapse
 	ul.nav.navbar-nav
-		+navlink('#','Home')(class='active')
-		+navlink('#about','About')
-		+navlink('#contact','Contact')
+		+navlink('','Home')(class='active')
+	ul.nav.navbar-nav.navbar-right
+		
+		li(id='navprofile')
+			+img-rounded(user.photos[0].value, user.displayName)
+			a(href="/profile", style="display: inline") #{user.displayName}
