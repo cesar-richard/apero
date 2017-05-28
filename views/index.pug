@@ -8,7 +8,9 @@ append scripts
 			formatter: function(value) {
 				return value + "/10";
 			}
-		});
+		}).on('slideStop', function(ev){
+	    console.log($(this).slider().context.value);
+});
 
 mixin will(user,userid,will,enabled)
 	p
@@ -17,13 +19,13 @@ mixin will(user,userid,will,enabled)
 				div(style="display: inline-block; padding: 1em;")
 					strong= user.displayName
 			div(style='text-align: center;')
-				| Envie : 
+				| Envie :
 				input.slider(style="width: 85%;", type='text', data-slider-ticks="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", data-slider-enabled=enabled?"true":"false", data-slider-value=will )
 
 mixin event(parent,event,expanded)
 	+accordion-item-primary(event.title + " - " + event.author.displayName,parent ,expanded)
 		p
-			div 
+			div
 				+img-rounded("https://graph.facebook.com/v2.9/" + event.authorUserid + "/picture", event.author.displayName) event.author.displayName
 				div(style="display: inline-block; padding: 1em;")
 					strong= event.author.displayName + " : "
