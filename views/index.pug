@@ -8,8 +8,11 @@ append scripts
 			formatter: function(value) {
 				return value + "/10";
 			}
-		}).on('slideStop', function(ev){
-	    console.log($(this).slider().context.value);
+		});
+		$('input.slider').each(function(){
+			$( this ).on('slideStop', function(ev){
+				console.log($( this ).slider().context.value);
+			});
 		});
 
 mixin will(user,userid,will,enabled)
