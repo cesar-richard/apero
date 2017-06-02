@@ -17,8 +17,8 @@ mixin will(user,userid,will,enabled)
 				div(style="display: inline-block; padding: 1em;")
 					strong= user.displayName
 			div(style='text-align: center;')
-				| Envie : 
-				input.slider(style="width: 85%;", type='text', data-slider-ticks="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", data-slider-enabled=enabled?"true":"false", data-slider-value=will )
+				| Envie :
+				input.slider(style="width: 85%;", type='text', data-slider-ticks="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", data-slider-enabled=enabled?"true":"false", data-slider-value=will)
 
 mixin event(parent,event,expanded)
 	+accordion-item-primary(event.title + " - " + event.author.displayName,parent ,expanded)
@@ -31,6 +31,7 @@ mixin event(parent,event,expanded)
 		-var mustAnswer = typeof(event.users.find(function(el) {return el.userid== user.id;}))==='undefined';
 		if mustAnswer
 				+will(user,user.id,0,true)
+				a.btn.btn-primary( href="link.htm", style="margin-left: 60px;" ) Save
 		each answer in event.users
 			if answer.userid == user.id
 				+will(answer,answer.userid,answer.answers.will,true)
