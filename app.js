@@ -22,6 +22,7 @@ global.sequelize = new Sequelize(config.database.database, config.database.usern
 require('./models');
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var will = require('./routes/will');
 
 var app = express();
 
@@ -120,14 +121,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req,res,next){
   res.locals.title = "Apéro !";
   res.locals.fb_api_key = config.facebook.api_key;
-  res.locals.user = req.user;/*
-  res.locals.user.displayName = "test";
-  res.locals.user.photos = [{value: "test"}];*/
+  res.locals.user = req.user;
   return next();
 });
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/will', will);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
