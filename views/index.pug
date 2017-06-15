@@ -13,12 +13,12 @@ append scripts
 			$( this ).on('slideStop', function(ev){
 				var eventId = $( this ).parent().parent().parent().attr('name');
 				var value = $( this ).slider().context.value;
-				$.post("/will",{"event": eventId, "value": value}, function(data){console.log(data);});
+				$.post("/will",{"event": eventId, "value": value});
 			});
 		});
 
 mixin will(user,userid,will,enabled)
-	div(style='clear:both;',user=userid)
+	div(user=userid)
 		div
 			+img-rounded("https://graph.facebook.com/v2.9/" + userid + "/picture", user.displayName) user.displayName
 			div(style="display: inline-block; padding: 1em;")
@@ -30,8 +30,8 @@ mixin will(user,userid,will,enabled)
 mixin event(parent,event,expanded)
 	+accordion-item-primary(event.title + " - " + event.author.displayName,parent ,expanded)
 		div(name=event.id)
-			div(style='clear:both;')
-				div(style='clear:both;')
+			div
+				div
 					+img-rounded("https://graph.facebook.com/v2.9/" + event.authorUserid + "/picture", event.author.displayName) event.author.displayName
 					div(style="display: inline-block; padding: 1em;")
 						strong= event.author.displayName + " : "
