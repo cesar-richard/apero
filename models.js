@@ -11,7 +11,7 @@ global.sequelize.models.user.belongsToMany(global.sequelize.models.event,{throug
 global.sequelize.models.event.belongsToMany(global.sequelize.models.user,{through: 'answers'});
 global.sequelize.models.event.belongsTo(global.sequelize.models.user,{as: 'author', allowNull: false});
 // CREATE TABLES
-global.sequelize.sync({force: true}).then(function(){
+global.sequelize.sync({force: false}).then(function(){
 	global.sequelize.models.user.create({
 		userid: "4",
 		displayName: "Mark Zuckerberg",
